@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- doy nombre al servicio y al espacio de nombres -->
+<definitions name="EjemploServicio" targetNamespace="urn:Ejemplo" 
+    xmlns:tns="urn:Ejemplo" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns="http://schemas.xmlsoap.org/wsdl/">
+    
+    <!-- message define los posibles formatos de entrada y salida de las funciones -->
+    <message name="EjemploPeticion">
+        <part name="base" type="xsd:float" />
+        <part name="altura" type="xsd:float" />
+    </message>
+    <message name="EjemploRespuesta">
+        <part name="respuesta" type="xsd:float" />
+    </message>
+    <message name="EjemploPeticion2">
+        <part name="id" type="xsd:string" />
+    </message>
+    <message name="EjemploRespuesta2">
+        <part name="nombre" type="xsd:string" />
+    </message>
+    <message name="EjemploArray">
+        <part name="nombre" type="xsd:string[]"/>
+    </message>
+
+    <!-- portType definir cuales son las funciones que va a publicar el servicio -->
+    <!-- se define su entrada y salida con message declarados anteriormente-->
+    <portType name="EjemploPort">
+
+        <operation name="getPVP">
+            <input message="tns:EjemploPeticion2" />
+            <output message="tns:EjemploRespuesta" />
+        </operation>
+        <operation name="getStock">
+            <input message="tns:EjemploPeticion" />
+            <output message="tns:EjemploRespuesta" />
+        </operation>
+        <operation name="getFamilias">
+            <output message="tns:EjemploArray" />
+        </operation>
+        <operation name="getProductosFamilia">
+            <input message="tns:EjemploPeticion2" />
+            <output message="tns:EjemploArray" />
+        </operation>
+
+    </portType>
+
+    <!-- binding es el enlace hace que en el servicio y por el espacio de nombre vamos a enlazar las funciones con el espacio de nombres -->
+    <binding name="EjemploBinding" type="tns:EjemploPort">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <!-- getPVP nombre de la función en el servidor -->
+        <operation name="getPVP">
+            <soap:operation soapAction="urn:servicio#getPVP" />
+            <input>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <!-- getStock nombre de la función en el servidor -->
+        <operation name="getStock">
+            <soap:operation soapAction="urn:servicio#getStock" />
+            <input>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <!-- getFamilias nombre de la función en el servidor -->
+        <operation name="getFamilias">
+            <soap:operation soapAction="urn:servicio#getFamilias" />
+            <input>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <!-- getProductosFamilia nombre de la función en el servidor -->
+        <operation name="getProductosFamilia">
+            <soap:operation soapAction="urn:servicio#getProductosFamilia" />
+            <input>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:servicio" 
+                    use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+
+
+    </binding>
+
+    <!-- service define el Servicio -->
+    <service name="EjemploServicio">
+        <port name="EjemploPort" binding="tns:EjemploBinding">
+            <soap:address location="http://localhost/practicas_php/PRACTICAS_IVAN/TEMA_6/servidorSoap/servidor.php" />
+        </port>
+    </service>
+</definitions>
